@@ -70,7 +70,7 @@ List<Widget> _buildScreens() {
 List<PersistentBottomNavBarItem> _navBarsItems() {
   return [
     PersistentBottomNavBarItem(
-      iconSize: 32,
+      iconSize: 30,
       icon: const Icon(Icons.person),
       activeColorPrimary: const Color.fromARGB(255, 185, 185, 185),
       title: ("Clientes"),
@@ -80,7 +80,7 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
     PersistentBottomNavBarItem(
       icon: const Icon(Icons.attach_money_rounded),
       activeColorPrimary: const Color.fromARGB(255, 185, 185, 185),
-      iconSize: 32,
+      iconSize: 30,
       title: ("Orçamento"),
       textStyle: const TextStyle(
         color: Color.fromARGB(255, 185, 185, 185)
@@ -88,7 +88,7 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
       activeColorSecondary: Colors.white,
     ),
     PersistentBottomNavBarItem(
-      iconSize: 32,
+      iconSize: 30,
       icon: const Icon(Icons.assignment_outlined),
       activeColorPrimary: const Color.fromARGB(255, 185, 185, 185),
       textStyle: const TextStyle(color: Color.fromARGB(255, 185, 185, 185)),

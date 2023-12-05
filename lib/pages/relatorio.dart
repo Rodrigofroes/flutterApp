@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projectapp/list.dart';
 
 class Relatorio extends StatefulWidget {
   const Relatorio({super.key});
@@ -16,11 +17,7 @@ class _RelatorioState extends State<Relatorio> {
       ),
       body: Column(
         children: [
-          Container(
-            child: const Center(
-              
-            ),
-          ),
+          
         ],
       ),
     );

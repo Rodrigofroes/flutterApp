@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:projectapp/list.dart';
 import 'package:projectapp/list/class_list.dart';
 import 'package:projectapp/utils/extesions.dart';
@@ -13,13 +14,19 @@ class OrcamentoPage extends StatefulWidget {
 
 class _OrcamentoPageState extends State<OrcamentoPage> {
   DateTime _seletDateInit = DateTime.now().add(const Duration(days: -30));
+  
 
   String? _servicoSelecionado;
-  final TextEditingController _valorController = TextEditingController();
+  final _valorController = MoneyMaskedTextController(
+    initialValue: 0.00,
+    decimalSeparator: ',',
+    thousandSeparator: '.',
+    leftSymbol: 'R\$ ',
+  );
   final TextEditingController _descricaoController = TextEditingController();
   final TextEditingController _nomeController = TextEditingController();
-  final TextEditingController _cpfController = TextEditingController();
-  final TextEditingController _celularController = TextEditingController();
+  final _cpfController = MaskedTextController(mask: '000.000.000-00');
+  final _celularController = MaskedTextController(mask: '(00) 00000-0000');
   final TextEditingController _enderecoController = TextEditingController();
 
   @override
@@ -63,6 +70,7 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                   Expanded(
                     child: TextField(
                       controller: _valorController,
+                      keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
                         labelText: 'Valor',
                       ),
@@ -74,7 +82,8 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                       DateTime? result = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
-                        firstDate: DateTime.now().add(const Duration(days: -800)),
+                        firstDate:
+                            DateTime.now().add(const Duration(days: -800)),
                         lastDate: DateTime.now().add(const Duration()),
                         builder: (context, child) {
                           return SingleChildScrollView(
@@ -126,6 +135,7 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
               const SizedBox(height: 20),
               TextField(
                 controller: _cpfController,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'CPF',
                   border: OutlineInputBorder(),
@@ -134,6 +144,7 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
               const SizedBox(height: 20),
               TextField(
                 controller: _celularController,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Celular',
                   border: OutlineInputBorder(),
@@ -157,15 +168,14 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
         backgroundColor: Colors.green,
         onPressed: () async {
           DadosUsuarios novoUsuarios = DadosUsuarios(
-            inputListOpc: _servicoSelecionado,
-            inputValor: _valorController.text,
-            inputDesc: _descricaoController.text,
-            inputNomeCompleto: _nomeController.text,
-            inputCpf: _cpfController.text,
-            inputCelular: _celularController.text,
-            inputEnd: _enderecoController.text,
-            dataCriacao: _seletDateInit
-          );
+              inputListOpc: _servicoSelecionado,
+              inputValor: _valorController.text,
+              inputDesc: _descricaoController.text,
+              inputNomeCompleto: _nomeController.text,
+              inputCpf: _cpfController.text,
+              inputCelular: _celularController.text,
+              inputEnd: _enderecoController.text,
+              dataCriacao: _seletDateInit);
 
           _valorController.clear();
           _descricaoController.clear();
@@ -179,7 +189,6 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
               .add(novoUsuarios.toJson());
 
           listaUsuarios.add(novoUsuarios);
-          print(listaUsuarios.length);
         },
         materialTapTargetSize: MaterialTapTargetSize.padded,
         isExtended: true,

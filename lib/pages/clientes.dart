@@ -18,32 +18,39 @@ class _ClientePageState extends State<ClientePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Clientes"),
+        ),
         body: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                right: 8,
-                left: 8,
+                right: 10,
+                left: 30,
                 top: 18,
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      onChanged: (value) {
-                        setState(() {
-                          buscarnome = value;
-                        });
-                      },
-                      decoration: const InputDecoration(
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            buscarnome = value;
+                          });
+                        },
+                        decoration: const InputDecoration(
                           labelText: "Procurar por cliente",
-                          border: OutlineInputBorder()),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                ],
+                    const SizedBox(
+                      width: 20,
+                    ),
+                  ],
+                ),
               ),
             ),
             const SizedBox(
@@ -135,12 +142,12 @@ class _ClientePageState extends State<ClientePage> {
                         .where('dataCriacao')
                         .snapshots(),
                     builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
                       if (snapshot.hasError) {
                         return const Center(
                             child: Text('Erro ao carregar usuários'));
-                      }
-                      if (!snapshot.hasData) {
-                        return const Center(child: CircularProgressIndicator());
                       }
                       final usuarios = snapshot.data?.docs ?? [];
                       if (usuarios.isEmpty) {
@@ -167,14 +174,13 @@ class _ClientePageState extends State<ClientePage> {
                         itemCount: dataFiltro.length,
                         itemBuilder: (_, index) {
                           final usuarioData = dataFiltro[index];
-
                           return Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 10.0),
                             child: Card(
                               child: ListTile(
                                 titleTextStyle: const TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 17,
                                     color: Color.fromARGB(255, 0, 0, 0)),
                                 title: Text(
                                     "Nome: ${usuarioData.inputNomeCompleto}"),
@@ -192,46 +198,30 @@ class _ClientePageState extends State<ClientePage> {
                                     children: [
                                       Text(
                                         "Celular: ${usuarioData.inputCelular}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall,
                                       ),
                                       Text(
+                                        "CPF: ${usuarioData.inputCpf}"),
+                                      Text(
                                         "Endereço: ${usuarioData.inputEnd}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall,
                                       ),
                                       Text(
                                         "Serviço: ${usuarioData.inputListOpc}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall,
                                       ),
                                       Text(
-                                        "Valor: R${usuarioData.inputValor}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall,
+                                        "Valor: ${usuarioData.inputValor}",
                                       ),
                                       Text(
                                         "Descrição: ${usuarioData.inputDesc}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall,
                                       ),
                                       Text(
                                         "Data: ${usuarioData.dataCriacao?.dataPtBr}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall,
                                       ),
                                     ],
                                   ),
                                 ),
                                 trailing: Container(
                                   alignment: Alignment.centerRight,
-                                  width: 140,
+                                  width: 40,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
