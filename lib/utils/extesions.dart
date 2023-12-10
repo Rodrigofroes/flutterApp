@@ -26,6 +26,14 @@ extension IntExt on int {
   }
 }
 
+
+extension DoubleExt on double {
+  String get valorFormatado {
+    return 'R\$ ${toStringAsFixed(2)}';
+  }
+}
+
+
 extension DateTimeExt on DateTime {
   String get dataEvento {
     return '${year.padLeft(4)}-${month.padLeft(2)}-${day.padLeft(2)} ${hour.padLeft(2)}:${minute.padLeft(2)}:${second.padLeft(2)}';
@@ -73,5 +81,25 @@ extension DateTimeExt on DateTime {
     };
     final mesExtensoStr = mesExtenso[mes];
     return '$dia $mesExtensoStr.';
+  }
+
+  String get dataPtBrMes {
+    final mes = month.padLeft(2);
+    final mesExtenso = {
+      'Janeiro',
+      'Fevereiro',
+      'Março',
+      'Abril',
+      'Maio',
+      'Junho',
+      'Julho',
+      'Agosto',
+      'Setembro',
+      'Outubro',
+      'Novembro',
+      'Dezembro',
+    };
+    final mesExtensoStr = mesExtenso.elementAt(int.parse(mes) - 1);
+    return mesExtensoStr;
   }
 }

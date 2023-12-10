@@ -2,7 +2,7 @@ import 'package:map_fields/map_fields.dart';
 
 class DadosUsuarios {
   String? inputListOpc;
-  String? inputValor;
+  double? inputValor;
   String? inputDesc;
   String? inputNomeCompleto;
   String? inputCpf;
@@ -25,7 +25,7 @@ class DadosUsuarios {
     final mapFields = MapFields.load(json);
     return DadosUsuarios(
       inputListOpc: mapFields.getStringNullable('inputListOpc'),
-      inputValor: mapFields.getStringNullable('inputValor'),
+        inputValor: mapFields.getDoubleNullable('inputValor'),
       inputDesc: mapFields.getStringNullable('inputDesc'),
       inputNomeCompleto: mapFields.getStringNullable('inputNomeCompleto'),
       inputCpf: mapFields.getStringNullable('inputCpf'),
