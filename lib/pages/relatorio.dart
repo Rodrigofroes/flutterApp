@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:projectapp/list/class_list.dart';
 import 'package:projectapp/utils/extesions.dart';
 
+
 class Relatorio extends StatefulWidget {
   const Relatorio({super.key});
 
@@ -26,25 +27,21 @@ class _RelatorioState extends State<Relatorio> {
           if (snapshot.hasError) {
             return const Center(child: Text('Erro ao carregar relatório'));
           }
-          final usuarios = snapshot.data?.docs ?? [];
-          if (usuarios.isEmpty) {
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return const Center(child: Text('Nenhum relatório encontrado'));
           }
-          final usuarioModel =
-              usuarios.map((e) => DadosUsuarios.fromJson(e.data())).toList();
 
-          final listaAgrupada = <String, List<DadosUsuarios>>{};
-          for (final usuario in usuarioModel) {
-            final dataPtBrMes = usuario.dataCriacao!.dataPtBrMes ?? '';
-            if (listaAgrupada.containsKey(dataPtBrMes)) {
-              listaAgrupada[dataPtBrMes]?.add(usuario);
-            } else {
-              listaAgrupada[dataPtBrMes] = [usuario];
-            }
+          final usuarios = snapshot.data!.docs
+              .map((e) => DadosUsuarios.fromJson(e.data()))
+              .toList();
+
+          final Map<String, List<DadosUsuarios>> listaAgrupada = {};
+          for (final usuario in usuarios) {
+            final dataPtBrMes = usuario.dataCriacao?.dataPtBrMes ?? '';
+            (listaAgrupada[dataPtBrMes] ??= []).add(usuario);
           }
 
           return ListView.builder(
-            shrinkWrap: true,
             itemCount: listaAgrupada.length,
             itemBuilder: (context, index) {
               final dataPtBrDiaMes = listaAgrupada.keys.elementAt(index);
@@ -53,43 +50,40 @@ class _RelatorioState extends State<Relatorio> {
                   .map((e) => e.inputValor ?? 0)
                   .reduce((value, element) => value + element);
 
-              return Expanded(
-                child: ExpansionTile(
-                  textColor: Colors.black,
-                  title: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        dataPtBrDiaMes,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        "Valor total: ${valorTotal.valorFormatado}",
-                        style: const TextStyle(fontWeight: FontWeight.w300),
-                      ),
-                    ],
-                  ),
+              return ExpansionTile(
+                textColor: Colors.black,
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    for (final usuario in usuarios)
-                      ListTile(
-                        title: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Cliente: ${usuario.inputNomeCompleto ?? ''}",
-                            ),
-                            Text("Serviço: ${usuario.inputListOpc ?? ''}"),
-                            Text(
-                                "Valor: ${usuario.inputValor!.valorFormatado}"),
-                          ],
-                        ),
-                        trailing: Text(usuario.dataCriacao?.dataPtBr ?? ''),
-                      ),
+                    Text(
+                      "$dataPtBrDiaMes - ${DateTime.now().getAnoAtual()}",
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "Valor total: ${valorTotal.valorFormatado}",
+                      style: const TextStyle(fontWeight: FontWeight.w300),
+                    ),
                   ],
                 ),
+                children: usuarios
+                    .map((usuario) => ListTile(
+                          title: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "Cliente: ${usuario.inputNomeCompleto ?? ''}"),
+                              Text("Serviço: ${usuario.inputListOpc ?? ''}"),
+                              Text(
+                                  "Valor: ${usuario.inputValor?.valorFormatado ?? ''}"),
+                            ],
+                          ),
+                          trailing: Text(usuario.dataCriacao?.dataPtBr ?? ''),
+                        ))
+                    .toList(),
               );
             },
           );

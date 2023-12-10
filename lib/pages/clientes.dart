@@ -121,7 +121,7 @@ class _ClientePageState extends State<ClientePage> {
                                         "Serviço: ${usuarioData.inputListOpc}",
                                       ),
                                       Text(
-                                        "Valor: ${usuarioData.inputValor}",
+                                        "Valor: ${usuarioData.inputValor?.valorFormatado}",
                                       ),
                                       Text(
                                         "Descrição: ${usuarioData.inputDesc}",

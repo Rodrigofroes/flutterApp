@@ -62,6 +62,12 @@ extension DateTimeExt on DateTime {
     return dataUtc;
   }
 
+  String getAnoAtual() {
+    var agora = DateTime.now();
+    var anoAtual = agora.year.toString();
+    return anoAtual;
+  }
+
   String get dataPtBrDiaMes {
     final dia = day.padLeft(2);
     final mes = month.padLeft(2);
