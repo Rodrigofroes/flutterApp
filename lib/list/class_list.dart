@@ -35,6 +35,16 @@ class DadosUsuarios {
     );
   }
 
+  bool get isValid {
+    return inputValor != null &&
+        (inputDesc ?? "").trim().isNotEmpty &&
+        (inputNomeCompleto ?? "").trim().isNotEmpty &&
+        (inputCpf ?? "").trim().isNotEmpty &&
+        (inputCelular ?? "").trim().isNotEmpty &&
+        (inputEnd ?? "").trim().isNotEmpty &&
+        dataCriacao != null;
+  }
+
   Map<String, dynamic> toJson() {
     return {
       "inputListOpc": inputListOpc,
@@ -44,7 +54,7 @@ class DadosUsuarios {
       "inputCpf": inputCpf,
       "inputCelular": inputCelular,
       "inputEnd": inputEnd,
-      "dataCriacao": DateTime.now().toString(),
+      "dataCriacao": dataCriacao.toString(),
     };
   }
 }

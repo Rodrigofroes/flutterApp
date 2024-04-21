@@ -63,7 +63,7 @@ class _RelatorioState extends State<Relatorio> {
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "Valor total: ${valorTotal.valorFormatado}",
+                      "Faturamento total: ${valorTotal.valorFormatado}",
                       style: const TextStyle(fontWeight: FontWeight.w300),
                     ),
                   ],
